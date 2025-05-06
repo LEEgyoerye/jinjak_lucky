@@ -8,24 +8,54 @@
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
   <style>
     body {
-      background-color: #101010;
+      background-color: #121212;
       margin: 0;
       padding: 0;
       font-family: 'Nanum Myeongjo', serif;
+      background-image: radial-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+                        radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 4px 4px;
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
+      position: relative;
+    }
+
+    .plaque-container {
+      position: relative;
+    }
+
+    .hanger {
+      width: 60px;
+      height: 12px;
+      background: #444;
+      border-radius: 4px;
+      position: absolute;
+      top: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 3px 5px rgba(0,0,0,0.6);
+    }
+
+    .string {
+      width: 2px;
+      height: 24px;
+      background: #555;
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     .plaque {
-      background-color: #1a1a1a;
-      color: #e0e0e0;
+      background-color: #1b1b1b;
       padding: 3.5rem 2.2rem;
-      width: 350px;
-      border-radius: 6px;
-      box-shadow: 10px 14px 30px rgba(0,0,0,0.6);
+      width: 380px;
+      color: #e2e2e2;
       text-align: center;
+      border-radius: 8px;
+      box-shadow: 8px 12px 30px rgba(0,0,0,0.8);
       border: 1px solid #2c2c2c;
     }
 
@@ -34,51 +64,71 @@
     }
 
     .logo img {
-      height: 28px;
+      height: 50px;
+      filter: brightness(0) invert(1);
       opacity: 0.85;
     }
 
     h1 {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       margin-bottom: 2rem;
-      color: #eaeaea;
-      letter-spacing: 0.5px;
+      color: #f0f0f0;
     }
 
     .fortune {
       font-size: 1rem;
       line-height: 2rem;
       white-space: pre-line;
-      color: #dddddd;
     }
 
     .footer {
       margin-top: 3rem;
       font-size: 0.85rem;
-      color: #999999;
+      color: #999;
     }
   </style>
 </head>
 <body>
-  <div class="plaque">
-    <div class="logo">
-      <img src="https://raw.githubusercontent.com/LEEgyoerye/jinjak_lucky/main/logo.png" alt="진작 로고">
+  <div class="plaque-container">
+    <div class="string"></div>
+    <div class="hanger"></div>
+    <div class="plaque">
+      <div class="logo">
+        <img src="logo.png" alt="진작 로고">
+      </div>
+      <h1>오늘의 운세</h1>
+      <div class="fortune" id="fortune-box">운세를 불러오는 중입니다...</div>
+      <div class="footer">진작이 전하는 오늘의 이야기</div>
     </div>
-    <h1>오늘의 운세</h1>
-    <div class="fortune" id="fortune-box">운세를 불러오는 중입니다...</div>
-    <div class="footer">진작이 전하는 오늘의 이야기</div>
   </div>
 
   <script>
-    const fortunes = [
-      "오늘은 그동안 해결하지 못했던 고민들의 흔적들이\n좋은 방향으로 정리될 수 있는 타이밍이에요.\n시선을 외부에 두기보다 내면에 집중하면서\n나를 돌아보는 시간을 가진다면,\n희망찬 계획을 세우는 데 도움이 될 거예요.",
-      "지금 느끼는 답답함은 멈추기 위한 것이 아니라\n더 멀리 나아가기 위한 준비일 수 있어요.\n천천히 나를 다독이며 정리해보세요.\n어제의 혼란은 오늘의 맑음으로 이어질 거예요.",
-      "바쁘게 지나온 시간을 잠시 멈추고,\n고요함 속에서 나를 들여다보는 시간을 가져보세요.\n지금 필요한 건 해결이 아니라 이해일 수 있어요.\n조급하지 않아도 괜찮아요.",
-      "당신 안의 감정은 결코 작지 않아요.\n그동안 눌러왔던 마음의 결들을\n하나씩 꺼내어 바라봐 주세요.\n오늘은 그 감정들이 말랑해지는 날이에요.",
-      "무언가를 놓친 것 같아도,\n당신은 여전히 당신의 길을 잘 걷고 있어요.\n비교하지 않고 바라보면\n당신이 쌓아온 하루하루가 보일 거예요."
+    const sentences = [
+      "오늘은 그동안 해결하지 못했던 고민들이 좋은 방향으로 흘러갈 수 있는 날이에요.",
+      "시선을 외부보다 내면에 두고 나를 돌아보는 시간을 가져보세요.",
+      "지금은 조급함보다는 평온함이 더 큰 결과를 이끌어낼 수 있어요.",
+      "가장 단순한 것에서 진짜 답을 찾을 수 있어요.",
+      "마음속에 머물던 생각들이 조용히 움직이기 시작해요.",
+      "기록하거나 나누는 과정이 감정을 정리하게 도와줄 거예요.",
+      "작은 기대가 생각보다 큰 기쁨이 될 수 있는 하루예요.",
+      "놓치지 말아야 할 건 바로 지금의 마음 상태일지도 몰라요.",
+      "어제보다 나아지기 위해 애쓰는 지금의 당신이 참 멋져요.",
+      "감정은 부정할수록 커지고, 인정할수록 작아져요.",
+      "자신을 믿는 순간, 모든 건 천천히 풀릴 거예요.",
+      "기다림 끝에는 분명 좋은 방향이 기다리고 있을 거예요.",
+      "의미 없는 하루는 없어요. 오늘도 당신 안에 쌓이고 있어요.",
+      "어디로 가든 결국 당신답게 머물 수 있으면 괜찮아요.",
+      "마음이 향하는 곳에 집중해보세요. 흐름이 바뀔 거예요."
     ];
-    const randomIndex = Math.floor(Math.random() * fortunes.length);
-    document.getElementById("fortune-box").innerText = fortunes[randomIndex];
+
+    function getRandomLines(arr, minLines = 6, maxLines = 8) {
+      const count = Math.floor(Math.random() * (maxLines - minLines + 1)) + minLines;
+      const shuffled = arr.sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, count).join("\n");
+    }
+
+    document.getElementById("fortune-box").innerText = getRandomLines(sentences);
   </script>
 </body>
 </html>
+
